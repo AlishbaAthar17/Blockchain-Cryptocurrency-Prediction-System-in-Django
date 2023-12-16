@@ -1,0 +1,66 @@
+<div class="topics">
+    <div class="topics__header">
+      <h2 style="color: var(--LIGHT, #0489aa); font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;   margin-top: 2px;">Communities</h2>
+    </div>
+    <ul class="topics__list">
+      <li>
+        <a href="{% url 'home' %}" class="active" style="color: #fff;">All <span style="display: flex;
+          width: 25px;
+          padding: 2.609px 6.044px 1.391px 6.956px;
+          justify-content: center;
+          align-items: center;
+          flex-shrink: 0;
+          border-radius: 14.913px;
+          background: var(--LIGHT, #0489aa);
+          color: var(--color1, #1B0036); ">{{communities.count}}</span></a>
+      </li>
+      {% for community in communities %}
+      <li>
+        <a href="{% url 'home' %}?q={{community.name}}" style="color: #fff;"> {{community.name}}<span style="display: flex;
+          width: 25px;
+          padding: 2.609px 6.044px 1.391px 6.956px;
+          justify-content: center;
+          align-items: center;
+          flex-shrink: 0;
+          border-radius: 14.913px;
+          background: var(--LIGHT, #0489aa);
+          color: var(--color1, #1B0036); ">{{community.room_set.all.count}}</span></a>
+      </li>
+      {% endfor %}
+    </ul>
+    <a class="btn btn--link" href="{% url 'topics' %}" style="
+    padding: 8px 50px;
+  flex-direction: column;
+  border-radius: 33px;
+  background: var(--LIGHT, #0489aa);
+  margin-left: 37px;
+  margin-top: 4px;
+  margin-bottom: 15px; color: white;">
+      More
+      <!-- <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <title>chevron-down</title>
+        <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
+      </svg> -->
+    </a>
+
+    <!-- {% include 'base/activity_component.html' %} -->
+  </div>
+
+  
+
+
+<!-- <h3>Communities</h3>
+<hr>
+
+<div>
+    <a href="{% url 'home' %}">All</a>
+</div>
+
+{% for community in communities %}
+<div>
+    <a href="{% url 'home' %}?q={{community.name}}">{{community.name}}</a>
+</div>
+{% endfor %} -->

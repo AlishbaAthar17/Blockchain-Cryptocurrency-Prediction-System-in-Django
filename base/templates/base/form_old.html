@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- A model form is a class-based representation of a form -->
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <input type="submit" value="Submit">
+
+    </form>
+</div>
+
+{% endblock %}

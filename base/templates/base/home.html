@@ -1,0 +1,354 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<script src="https://kit.fontawesome.com/eaf5d49ec1.js" crossorigin="anonymous"></script>
+
+
+<main class="layout layout--3">
+  <div class="container">
+
+    <!-- Topics Start -->
+    {% include 'base/topics_components.html' %}
+
+    <!-- Topics End -->
+
+
+
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="mobile-menu">
+        <form action="{% url 'home' %}" method="GET" class="header__search">
+          <label>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>search</title>
+              <path
+                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
+              </path>
+            </svg>
+            <input name="q" placeholder="Search for posts" />
+          </label>
+        </form>
+        <div class="mobile-menuItems">
+          <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Browse Topics</a>
+          <a class="btn btn--main btn--pill" href="{% url 'activity' %}">Recent Activities</a>
+        </div>
+      </div>
+
+      <div class="roomList__header">
+        <div>
+          <h2 style="color: var(--LIGHT, #0489aa);
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal; ">ROOMS</h2>
+          <p style="color: #fff;">{{room_count}} room(s) available</p>
+        </div>
+
+        <a class="btn btn--main" href="{% url 'create-room' %}" style="width: 167px;
+        height: 45px;
+        flex-shrink: 0; border-radius: 30px;
+background: #0489aa; margin-right: 41px; color: var(--color1, white);
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal; ">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>add</title>
+            <path
+              d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z">
+            </path>
+          </svg>
+          Create Room
+        </a>
+      </div>
+
+      {% include 'base/feed_component.html' %}
+
+    </div>
+
+    <div class="activities" style="background: #004e61; border:2px solid #0489aa;">
+      <div class="activities__header" style="background: #0489aa;">
+        <h2 style="background-color: #0489aa; color: white; text-align: center;">Trending Currencies <i
+            class="fa-solid fa-arrow-trend-up"></i></h2>
+      </div>
+      {% if request.user.is_authenticated %}
+      <div class="activities__box" style="border: 2px solid #0489aa;">
+        <div class="activities__boxHeader roomListRoom__header">
+          <form method="POST">
+            {% csrf_token %}
+            <select name="selected_coin_name" id="" style="height: 35px;
+            border-radius: 18px;
+            border: 2px solid #fff;
+            text-align: center;
+            margin-left: 20px; background-color: #fff; color: #180736;">
+              {% for coin, model in coin_names.items %}
+              <option value="" disabled selected hidden>Select Crypto</option>
+              <option value='{{model}}'>{{coin}}</option>
+              {% endfor %}
+            </select>
+
+            <br>
+            <input type="text" name="input_coin_name" placeholder="Enter Coin Name" style="height: 35px;
+            margin-top: 7px;
+            border-radius: 18px;
+            text-align: center;
+            margin-left: 19px;
+            width: 195px; background-color: #fff; color: #180736; border: 2px solid #fff;">
+            <h4 style="text-align: center; margin-top: 7px;">*Please enter the exact coin name selected earlier. The
+              name written before '(' must <br>be entered.
+            </h4>
+            <input type="number" name="input_data" placeholder="Enter Open Price" style="height: 35px;
+            margin-top: 7px;
+            border-radius: 18px;
+            text-align: center;
+            margin-left: 19px;
+            width: 195px; background-color: #fff; color: #180736; border: 2px solid #fff;">
+            <br>
+            <input type="number" name="input_data1" placeholder="Enter Close Price" style="height: 35px;
+            margin-top: 7px;
+            border-radius: 18px;
+            text-align: center;
+            margin-left: 19px;
+            width: 195px; background-color: #fff; color: #180736; border: 2px solid #fff;">
+            <input type="submit" value="Predict" style="height: 35px;
+            margin-top: 10px;
+            width: 105px;
+            border-radius: 18px;
+            margin-left: 63px;
+            background-color: #0489aa;
+            border: none;
+            color: white;">
+          </form>
+
+        </div>
+        <div class="activities__boxContent">
+          {% if BTC_prediction is not None%}
+          {% if name_input == 'ethereum' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><i class="fa-brands fa-ethereum fa-1x"
+              style="color: #74bcbf; margin-right: 5px;"></i>Ethereum</h4>
+          <!-- <img src="static/ethchart.png" alt=""> -->
+          <!-- <button>View chart</button> -->
+          <a href="static/ethchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+
+          {% elif name_input == 'dogecoin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/dogecoin.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Dogecoin</h4>
+          <a href="static/dogechart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'bitcoin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/btcc.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Bitcoin</h4>
+          <a href="static/BTCchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'bitcoin cash' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/bitcoincash.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Bitcoin cash</h4>
+          <a href="static/bitcashchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'binance coin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/binance.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Binance</h4>
+          <a href="static/bnbchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'cardano' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/cardano.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Cardano</h4>
+          <a href="static/adachart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'dai coin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/dai.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Dai Coin</h4>
+          <a href="static/daichart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'chainlink' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/chainlink.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Chainlink</h4>
+          <a href="static/chainlinkchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'litecoin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/litecoin.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Litecoin</h4>
+          <a href="static/litecoinchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'polkadot' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/polkadot.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Polkadot</h4>
+          <a href="static/polkadotchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'polygon' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/polygon.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Polygon Matic</h4>
+          <a href="static/polygonchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'shiba inu' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/shiba.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Shiba INU</h4>
+          <a href="static/shibachart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'solana' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/solana.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Solana</h4>
+          <a href="static/solanachart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'stellar' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/stellar.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Stellar</h4>
+          <a href="static/stellarchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'tron' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/tron.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Tron TRX</h4>
+          <a href="static/tronchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'trueusd' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/tusd.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">TrueUSD</h4>
+          <a href="static/truechart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'usd coin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/usdc.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">USD Coin</h4>
+          <a href="static/usdcchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'tether' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/tether.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Tether</h4>
+          <a href="static/usdtchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'wrapped bitcoin' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/wrappedbtc.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Wrapped bitcoin</h4>
+          <a href="static/wrappedchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% elif name_input == 'ripple usd' %}
+          <h4 style="font-size: 20px;
+          margin-top: 6px;
+          margin-left: 18px;"><img src="static/ripple.png" alt="" style="width: 14%;
+            right: 40px;
+            position: relative;
+            right: 5px; top: 6px;" height="25">Ripple USD</h4>
+          <a href="static/xrpchart.png" type="button" class="btn btn-sm btn-outline-secondary" style="background: #0489aa;color: white;
+          position: relative;
+          left: 21px;border-radius: 18px; border: none;height: 35px;">View chart</a>
+          {% endif %}
+          <h2 style="font-size: 18px;
+          margin-left: -2px;">Prediction Result:</h2>
+          <div class="activities__boxRoomContent" style="background-color: #0489aa;">
+            <h3 style="font-size: 18px; text-align: center; color: #180736; font-weight: 400;">Open price:
+              ${{open_input}} <br> Close price: ${{close_input}}</h3>
+            <p style="font-size: 18px; text-align: center; color: #180736; font-weight: bold;">Predicted {{name_input}}
+              Price: <br>${{ BTC_prediction }}
+            </p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <p>Please login to predict crypto currencies</p>
+      {% endif %}
+    </div>
+    
+    <!-- <div>
+      {% include 'base/activity_component.html' %}
+    </div> -->
+    <!-- Activities End -->
+  </div>
+
+</main>
+
+{% endblock %}

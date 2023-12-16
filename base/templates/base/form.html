@@ -1,0 +1,73 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<main class="create-room layout">
+  <div class="container">
+    <div class="layout__box" style="background: linear-gradient(to bottom, #004e61 70%, black);box-shadow: 0px 5px 9px 0px rgba(85, 31, 139, 0.20);  ">
+      <div class="layout__boxHeader" style="background: #0489aa; ">
+        <div class="layout__boxTitle">
+          <a href="{% url 'home' %}">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" style="fill: white;">
+              <title>arrow-left</title>
+              <path
+                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+              </path>
+            </svg>
+          </a>
+          <h3 style="color: white;">Create Study Room</h3>
+        </div>
+      </div>
+      <div class="layout__body">
+        <form class="form" action="" method="POST">
+          {% csrf_token %}
+
+
+          <div class="form__group">
+            <label for="room_subject">Enter a Community</label>
+            <input required type="text" value="{{room.subject.name}}" name="subject" list="subject-list">
+            <datalist id="subject-list">
+              <select id="room_subject">
+                {% for community in communities %}
+                <option value="{{community.name}}">{{community.name}}</option>
+                {% endfor %}
+              </select>
+            </datalist>
+          </div>
+
+          
+          <div class="form__group">
+            <label for="room_name">Room Name</label>
+            {{form.name}}
+          </div>
+
+          <div class="form__group">
+            <label for="room_description">Room Description</label>
+            {{form.description}}
+          </div>
+          
+          <!-- <div class="form__group">
+            <label for="room_topic">Topic</label>
+            <input required type="text" name="topic" id="room_topic" list="topic-list" />
+            <datalist id="topic-list">
+              <select id="room_topic">
+                <option value="">Select your topic</option>
+                <option value="Python">Python</option>
+                <option value="Django">Django</option>
+              </select>
+            </datalist>
+
+          </div> -->
+
+          <div class="form__action">
+            <a class="btn btn--dark" href="{% url 'home' %}" style="background-color: #0489aa;color: white;">Cancel</a>
+            <button class="btn btn--main" type="submit" style="background-color: #0489aa;color: white;">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

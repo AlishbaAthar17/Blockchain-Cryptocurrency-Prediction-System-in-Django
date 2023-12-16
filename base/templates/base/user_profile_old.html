@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .profile-container {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+
+<h1>{{user.username}}</h1>
+
+<div class="profile-container">
+    <div>
+        {% include 'base/topics_components.html' %}
+
+        <div>
+
+        {% include 'base/activity_component.html' %}
+
+        </div>
+    </div>
+
+    <div>
+        <!-- all the rooms that this specific user is in -->
+        {% include 'base/feed_component.html' %}
+    </div>
+
+    <div>
+        {% load static %}
+        <h3>Trending Currencies <i class="fa-solid fa-arrow-trend-up"></i></h3>
+        <!-- <h4><i class="fa-brands fa-ethereum"></i>Ethereum</h4> -->
+        <form method="POST">
+            {% csrf_token %}
+            <select name="selected_coin_name" id="">
+                {% for coin, model in coin_names.items %}
+                <option value="" disabled selected hidden>Select Crypto</option>
+                <option value='{{model}}'>{{coin}}</option>
+                {% endfor %}
+            </select>
+
+            <br>
+            <input type="text" name="input_coin_name" placeholder="Enter Coin Name">
+            <h4>*Please enter the exact coin name selected earlier. The name written before '(' must be entered.
+            </h4>
+            <input type="number" name="input_data" placeholder="Enter Open Price">
+            <input type="number" name="input_data1" placeholder="Enter Close Price">
+            <input type="submit" value="Predict">
+        </form>
+
+
+
+        {% if BTC_prediction is not None%}
+            {% if name_input == 'ethereum' %}
+            <h4><i class="fa-brands fa-ethereum" style="color: #0f91f0;"></i>Ethereum</h4>
+            {% elif name_input == 'dogecoin' %}
+            <h4><img src="static/dogecoin.png" alt="" width="30" height="30">Dogecoin</h4>
+            {% elif name_input == 'bitcoin' %}
+            <h4><img src="static/bitcoin.png" alt="" width="30" height="30">Bitcoin</h4>
+            {% elif name_input == 'bitcoin cash' %}
+            <h4><img src="static/bitcoincash.png" alt="" width="30" height="30">Bitcoin cash</h4>
+            {% elif name_input == 'binance coin' %}
+            <h4><img src="static/binance.png" alt="" width="30" height="30">Binance</h4>
+            {% elif name_input == 'cardano' %}
+            <h4><img src="static/cardano.png" alt="" width="30" height="30">Cardano</h4>
+            {% elif name_input == 'dai coin' %}
+            <h4><img src="static/dai.png" alt="" width="30" height="30">Dai Coin</h4>
+            {% elif name_input == 'chainlink' %}
+            <h4><img src="static/chainlink.png" alt="" width="30" height="30">Chainlink</h4>
+            {% elif name_input == 'litecoin' %}
+            <h4><img src="static/litecoin.png" alt="" width="30" height="30">Litecoin</h4>
+            {% elif name_input == 'polkadot' %}
+            <h4><img src="static/polkadot.png" alt="" width="30" height="30">Polkadot</h4>
+            {% elif name_input == 'polygon' %}
+            <h4><img src="static/polygon.png" alt="" width="30" height="30">Polygon Matic</h4>
+            {% elif name_input == 'shiba inu' %}
+            <h4><img src="static/shiba.png" alt="" width="30" height="30">Shiba INU</h4>
+            {% elif name_input == 'solana' %}
+            <h4><img src="static/solana.png" alt="" width="30" height="30">Solana</h4>
+            {% elif name_input == 'stellar' %}
+            <h4><img src="static/stellar.png" alt="" width="30" height="30">Stellar</h4>
+            {% elif name_input == 'tron' %}
+            <h4><img src="static/tron.png" alt="" width="30" height="30">Tron TRX</h4>
+            {% elif name_input == 'trueusd' %}
+            <h4><img src="static/tusd.png" alt="" width="30" height="30">TrueUSD</h4>
+            {% elif name_input == 'usd coin' %}
+            <h4><img src="static/usdc.png" alt="" width="30" height="30">USD Coin</h4>
+            {% elif name_input == 'tether' %}
+            <h4><img src="static/tether.png" alt="" width="30" height="30">Tether</h4>
+            {% elif name_input == 'wrapped bitcoin' %}
+            <h4><img src="static/wrappedbtc.png" alt="" width="30" height="30">Wrapped bitcoin</h4>
+            {% elif name_input == 'ripple usd' %}
+            <h4><img src="static/ripple.png" alt="" width="30" height="30">Ripple USD</h4>
+            {% endif %}
+        <h2>Prediction Result:</h2>
+        <h3>Open price: ${{open_input}} <br> Close price: ${{close_input}}</h3>
+        <p>Predicted {{name_input}} Price: <br><textarea cols="25" rows="1">${{ BTC_prediction }}</textarea>
+        </p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
